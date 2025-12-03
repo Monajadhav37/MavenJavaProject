@@ -1,0 +1,43 @@
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'MAVEN_HOME'
+    }
+
+    stages {
+
+        stage('Clone Git Repo') {
+            steps {
+                echo "Cloning GitHub Repository..."
+                bat 'rmdir /s /q octJava || echo folder not found'
+                bat 'git clone https://github.com/Monajadhav37/3dec.git'
+            }
+        }
+
+        stage('Maven Clean') {
+            steps {
+                bat "mvn clean -f octJava"
+            }
+        }
+
+        stage('Maven Install') {
+            steps {
+                bat "mvn install -f octJava"
+            }
+        }
+
+        stage('Maven Test') {
+            steps {
+                bat "mvn test -f octJava"
+            }
+        }
+
+        stage('Maven Package') {
+            steps {
+                bat "mvn package -f octJava"
+            }
+        }
+    }
+}
